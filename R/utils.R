@@ -93,7 +93,9 @@ check_tf_version <- function(alert = c("none",
     } else {
 
       tf_version <- tf$`__version__`
-      tf_version_valid <- utils::compareVersion("1.14.0", tf_version) != 1
+      # remove text bit
+      tf_version <- strsplit(tf_version, "-")[[1]][1]
+      tf_version_valid <- utils::compareVersion("2.0.0", tf_version) != 1
 
       if (!tf_version_valid) {
         text <- paste0("you have TensorFlow version ", tf_version)
@@ -129,7 +131,7 @@ check_tf_version <- function(alert = c("none",
       install <- paste0(
         "  install_tensorflow(\n",
         ifelse(have_conda(), "    method = \"conda\",\n", ""),
-        "    version = \"1.14.0\",\n",
+        "    version = \"2.0.0b1\",\n",
         "    extra_packages = \"tensorflow-probability\"\n",
         "  )"
       )
@@ -137,7 +139,7 @@ check_tf_version <- function(alert = c("none",
       # combine the problem and solution messages
       text <- paste0(
         "\n\n",
-        "This version of greta requires TensorFlow v1.14.0 ",
+        "This version of greta requires TensorFlow v2.0.0b1 ",
         "and TensorFlow Probability v0.7.0, but ", text, ". ",
         "To install the correct versions do:\n\n", install,
         "\n"
